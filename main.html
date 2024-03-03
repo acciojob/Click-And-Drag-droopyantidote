@@ -72,11 +72,8 @@ items.addEventListener('mousemove', () => {
     if (items.scrollLeft !== scrollLeft) {
       // If it has updated, Cypress should be able to detect it correctly.
       // Thus, we don't need any additional changes here.
-    } else {
-      // If the scrollLeft property hasn't updated, we need to force Cypress to retry the assertion.
-      cy.get('.items').trigger('mousemove', { force: true });
-    }
-  }
+    } 
+      }
 });
 </script>
 
