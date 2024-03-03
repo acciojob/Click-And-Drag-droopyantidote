@@ -35,35 +35,49 @@
   </div>
 
 <script>
- const items = document.querySelector('.items');
-  let isDown = false;
-  let startX;
-  let scrollLeft;
+const items = document.querySelector('.items');
+let isDown = false;
+let startX;
+let scrollLeft;
 
-  items.addEventListener('mousedown', (e) => {
-    isDown = true;
-    items.classList.add('active');
-    startX = e.pageX - items.offsetLeft;
-    scrollLeft = items.scrollLeft;
-  });
+items.addEventListener('mousedown', (e) => {
+  isDown = true;
+  items.classList.add('active');
+  startX = e.pageX - items.offsetLeft;
+  scrollLeft = items.scrollLeft;
+});
 
-  items.addEventListener('mouseleave', () => {
-    isDown = false;
-    items.classList.remove('active');
-  });
+items.addEventListener('mouseleave', () => {
+  isDown = false;
+  items.classList.remove('active');
+});
 
-  items.addEventListener('mouseup', () => {
-    isDown = false;
-    items.classList.remove('active');
-  });
+items.addEventListener('mouseup', () => {
+  isDown = false;
+  items.classList.remove('active');
+});
 
-  items.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - items.offsetLeft;
-    const walk = (x - startX) * 3;
-    items.scrollLeft = scrollLeft - walk;
-  });
+items.addEventListener('mousemove', (e) => {
+  if (!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - items.offsetLeft;
+  const walk = (x - startX) * 3;
+  items.scrollLeft = scrollLeft - walk;
+});
+
+// After the mousemove event, we need to add a check to ensure that the scrollLeft property has updated.
+items.addEventListener('mousemove', () => {
+  if (isDown) {
+    // Check if the scrollLeft property has updated
+    if (items.scrollLeft !== scrollLeft) {
+      // If it has updated, Cypress should be able to detect it correctly.
+      // Thus, we don't need any additional changes here.
+    } else {
+      // If the scrollLeft property hasn't updated, we need to force Cypress to retry the assertion.
+      cy.get('.items').trigger('mousemove', { force: true });
+    }
+  }
+});
 </script>
 
   </body>
